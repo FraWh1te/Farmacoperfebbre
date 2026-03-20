@@ -1,150 +1,338 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="it">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Tachipirina 120 mg/5 ml — Product Page </title>
-  <style>
-    /* Basic reset and layout to mimic the provided design */
-    *{box-sizing:border-box}
-    body{font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; margin:0; background:#fff7f0; color:#0b2b3a}
-    .container{max-width:1180px;margin:0 auto;padding:18px}
-    header{display:flex;align-items:center;gap:18px;padding:12px 0}
-    .logo{display:flex;align-items:center;gap:12px}
-    .logo .mark{width:46px;height:46px;background:#ff7a00;border-radius:8px}
-    .search{flex:1}
-    .search input{width:100%;padding:14px 18px;border-radius:28px;border:2px solid #ff7a00}
-    .breadcrumb{color:#6b8191;font-size:14px;margin:14px 0}
+    <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PulseSync">
 
-    .product-wrap{display:grid;grid-template-columns:360px 1fr 360px;gap:24px;align-items:start}
-    .product-image{background:#fff;padding:18px;border-radius:12px;border:1px solid #eee}
-    .product-image img{width:100%;height:auto;display:block}
+<link rel="apple-touch-icon" href="https://tua-immagine-icona.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PulseSync Ecosistema</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg: #030303;
+            --surface: #121214;
+            --glass: rgba(255, 255, 255, 0.08);
+            --accent: #00ff88;
+            --accent-alt: #ff2d55;
+            --accent-blue: #0a84ff;
+            --text: #ffffff;
+            --text-dim: #8e8e93;
+            --nav-height: 70px;
+        }
 
-    .product-main h1{font-size:26px;color:#073048;margin:0 0 8px}
-    .rating{color:#0fa36b;margin-bottom:8px}
-    .price-card{background:#fff3ea;border-radius:12px;padding:18px;border:1px solid #ffe1cc}
-    .price{font-size:22px;color:#d93b2b;font-weight:700}
-    .add-btn{display:inline-flex;align-items:center;gap:10px;padding:12px 18px;border-radius:12px;background:#ff7a00;color:#fff;border:none;font-weight:700;cursor:pointer}
-    .qty{display:inline-flex;align-items:center;border:1px solid #ffd7c7;border-radius:8px;padding:6px 10px}
-    .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-    .tag{background:#fff6f2;padding:8px 12px;border-radius:999px;border:1px solid #ffd9c8;color:#d65a2a;font-weight:600}
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-    .description{margin-top:28px;background:#fff;padding:22px;border-radius:12px;border:1px solid #fde7d8}
-    .description h2{margin-top:0}
-    ul.features{margin:8px 0 0 18px}
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0; padding: 0;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-    footer{margin:36px 0 80px;color:#6b8191;text-align:center}
+        /* --- View Manager --- */
+        .main-content {
+            flex: 1;
+            position: relative;
+            overflow-y: auto;
+            padding-bottom: calc(var(--nav-height) + 20px);
+        }
 
-    @media(max-width:1000px){.product-wrap{grid-template-columns:1fr;}.price-card{order:3}}
-  </style>
+        .view {
+            display: none;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .view.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2.section-title { font-weight: 800; font-size: 1.8rem; margin-top: 0; margin-bottom: 20px; }
+
+        /* --- UI Elements --- */
+        .card { background: var(--surface); border-radius: 16px; padding: 15px; border: 1px solid #222; margin-bottom: 15px; }
+        .glass-card { background: var(--glass); backdrop-filter: blur(10px); border-radius: 16px; padding: 15px; border: 1px solid rgba(255,255,255,0.1); }
+        
+        /* --- Navigation Bar & FAB --- */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; width: 100%; height: var(--nav-height);
+            background: rgba(10, 10, 12, 0.9); backdrop-filter: blur(20px);
+            display: flex; justify-content: space-around; align-items: center;
+            border-top: 1px solid #222; z-index: 1000;
+        }
+
+        .nav-item {
+            color: var(--text-dim); font-size: 1.2rem; cursor: pointer;
+            display: flex; flex-direction: column; align-items: center; gap: 4px;
+            transition: 0.3s;
+        }
+        .nav-item span { font-size: 0.65rem; font-weight: 600; }
+        .nav-item.active { color: var(--text); }
+
+        .fab {
+            width: 55px; height: 55px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-blue), #005bb5);
+            display: flex; justify-content: center; align-items: center;
+            font-size: 1.5rem; color: white; box-shadow: 0 10px 20px rgba(10, 132, 255, 0.4);
+            transform: translateY(-20px); border: 4px solid var(--bg); cursor: pointer;
+        }
+
+        /* --- Social / Friends Section --- */
+        .leaderboard-item { display: flex; align-items: center; gap: 15px; margin-bottom: 10px; padding: 10px; border-radius: 12px; cursor: pointer; transition: background 0.2s;}
+        .leaderboard-item:hover { background: #1a1a1c; }
+        .avatar { width: 50px; height: 50px; border-radius: 50%; background: #333; display: flex; justify-content: center; align-items: center; font-weight: 800; }
+        .rank { font-size: 1.2rem; font-weight: 800; color: var(--accent); width: 25px; }
+
+        /* --- Jam Modal --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
+            display: flex; justify-content: center; align-items: flex-end;
+            z-index: 2000; opacity: 0; visibility: hidden; transition: 0.3s;
+        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-content {
+            background: var(--surface); width: 100%; border-radius: 30px 30px 0 0;
+            padding: 30px 20px 50px; text-align: center; transform: translateY(100%); transition: 0.3s;
+        }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+        
+        .radar {
+            width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--accent-blue);
+            margin: 0 auto 20px; position: relative; display: flex; justify-content: center; align-items: center;
+        }
+        .radar::before {
+            content: ''; position: absolute; width: 100%; height: 100%; border-radius: 50%;
+            background: rgba(10, 132, 255, 0.2); animation: radar-ping 1.5s infinite;
+        }
+        @keyframes radar-ping { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(2); opacity: 0; } }
+
+        /* --- Tags --- */
+        .tag { background: rgba(255,255,255,0.1); padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; display: inline-block; margin: 5px 5px 0 0; }
+
+    </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <div class="logo">
-        <div class="mark" aria-hidden></div>
-        <div>
-          <strong>Farmacia Soccavo</strong>
-        </div>
-      </div>
-      <div class="search">
-        <input placeholder="Cerca un articolo..." />
-      </div>
-      <div style="width:58px"></div>
-    </header>
 
-    <nav class="breadcrumb">Home › Elenco Farmaci › FeverTachis › <strong>Tachipirina Sospensione Orale 120 ml 120 mg/5 ml</strong></nav>
+    <div class="main-content">
 
-    <main class="product-wrap">
-      <aside class="product-image">
-        <!-- Replace METTI QUI IMMAGINI with the actual image URL or file path -->
-        <img src="farmaco1.jpg" alt="Tachipirina box" />
-        <div style="display:flex;gap:8px;margin-top:10px">
-          <img src="farmaco2.jpg" style="width:64px;height:64px;border-radius:6px;border:1px solid #eee" />
-          <img src="farmaco3.jpeg" style="width:64px;height:64px;border-radius:6px;border:1px solid #eee" />
-        </div>
-      </aside>
-
-      <section class="product-main">
-        <h1>Farmaco che induce alla febbre</h1>
-        <div class="rating">★★★★☆ &nbsp; 2 recensioni</div>
-
-        <div style="background:#f7fff9;border-radius:12px;padding:12px;border:1px solid #e6f7ea">
-          <strong>Scegli l'acquisto multiplo e risparmia</strong>
-          <div style="display:flex;gap:8px;margin-top:10px">
-            <div style="background:#fff;padding:10px;border-radius:8px;border:1px solid #eaeaea">x1 Unità<br><small>5,90 €/pz</small></div>
-            <div style="background:#fff;padding:10px;border-radius:8px;border:1px solid #eaeaea">x3 Unità<br><small>5,78 €/pz</small></div>
-            <div style="background:#fff;padding:10px;border-radius:8px;border:1px solid #eaeaea">x4 Unità<br><small>5,72 €/pz</small></div>
-            <div style="background:#fff;padding:10px;border-radius:8px;border:1px solid #eaeaea">x5 Unità<br><small>5,66 €/pz</small></div>
-          </div>
+        <div id="view-music" class="view">
+            <h2 class="section-title">La Tua Musica</h2>
+            <div class="card" style="display: flex; align-items: center; gap: 15px;">
+                <div style="width: 60px; height: 60px; background: linear-gradient(45deg, #ff9a9e, #fecfef); border-radius: 12px;"></div>
+                <div>
+                    <h3 style="margin: 0;">In riproduzione</h3>
+                    <p style="margin: 5px 0 0; color: var(--text-dim); font-size: 0.8rem;">Seleziona brano dalla cartella locale...</p>
+                </div>
+                <i class="fa-solid fa-play" style="margin-left: auto; font-size: 1.5rem;"></i>
+            </div>
         </div>
 
-        <div class="tags">
-          <span class="tag">Farmaci on line</span>
-          <span class="tag">Farmaci per febbre</span>
-          <span class="tag">Elenco Farmaci</span>
-          <span class="tag">Tachipirina</span>
+        <div id="view-explore" class="view">
+            <h2 class="section-title">Esplora</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div class="card" style="background: linear-gradient(135deg, #2b5876 0%, #4e4376 100%); border: none;">
+                    <h3>Workout Mix</h3>
+                    <p style="font-size: 0.8rem; opacity: 0.8;">140-160 BPM</p>
+                </div>
+                <div class="card" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); border: none; color: black;">
+                    <h3>Defaticamento</h3>
+                    <p style="font-size: 0.8rem; opacity: 0.8;">Ambient & Chill</p>
+                </div>
+            </div>
         </div>
 
-        <div class="description">
-          <h2>Descrizione</h2>
-          <p><strong>Farmaco che induce alla febbre</strong> è un prodotto finto creato per scopi scolastici. \n          <em>Descrizione:</em> Prodotto dall'industria immaginaria "Fiammella Labs". Uso: non usarlo davvero. Effetti collaterali descritti in modo: <strong>diventi verde</strong>, visioni di unicorni e voglia improvvisa di cantare sotto la pioggia. Nessuna indicazione medica reale, nessuna istruzione d'uso.</p>
-
-          <h3>Caratteristiche del Prodotto:</h3>
-          <ul class="features">
-            <li>Antipiretico e analgesico per bambini</li>
-            <li>120 mg di Paracetamolo per 5 ml di soluzione</li>
-            <li>Flacone da 120 ml con misurino dosatore</li>
-            <li>Allevia dolore lieve e febbre</li>
-            <li>Facile da somministrare e dosare</li>
-          </ul>
-
-          <h3>FAQ</h3>
-          <p><strong>Quali sono le indicazioni?</strong><br>Utilizzata per ridurre la febbre e alleviare il dolore lieve nei bambini.</p>
-          <p><strong>Come si somministra?</strong><br>Utilizzare il misurino incluso per dosare accuratamente e somministrare per via orale.</p>
-        </div>
-      </section>
-
-      <aside class="price-card">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div>
-            <div style="color:#7b9aa3">€ <span class="price">5,90</span> <small style="text-decoration:line-through;color:#9aaeb7">7,25</small></div>
-            <div style="color:#ff6b4d;margin-top:6px">Stai risparmiando 1,35 €</div>
-          </div>
-          <div style="text-align:right">
-            <div style="background:#e9fff5;color:#0b7a4a;padding:6px 10px;border-radius:999px;font-weight:700">Disponibile</div>
-          </div>
+        <div id="view-training" class="view active">
+            <h2 class="section-title">Training</h2>
+            <div style="text-align: center; margin: 40px 0;">
+                <div class="fab" style="width: 120px; height: 120px; margin: 0 auto; transform: none; background: linear-gradient(135deg, var(--accent), #00b35f); font-size: 3rem; color: #000; box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);">
+                    <i class="fa-solid fa-person-running"></i>
+                </div>
+                <h3 style="margin-top: 20px;">INIZIA ALLENAMENTO</h3>
+            </div>
+            <h3>Training Logs</h3>
+            <div class="card"><i class="fa-solid fa-route" style="color: var(--accent);"></i> Ieri - 5.2 km (Passo 5:30)</div>
+            <div class="card"><i class="fa-solid fa-route" style="color: var(--accent);"></i> Lunedì - 8.1 km (Passo 6:00)</div>
         </div>
 
-        <div style="margin-top:16px;display:flex;gap:8px;align-items:center">
-          <div class="qty">- &nbsp;<strong>1</strong>&nbsp; +</div>
-          <!-- IMPORTANT: Insert the rickroll link where indicated below -->
-          <button class="add-btn" id="buyBtn">Aggiungi</button>
+        <div id="view-friends" class="view">
+            <h2 class="section-title">Community</h2>
+            <p style="color: var(--text-dim); font-size: 0.9rem;">Classifica Km percorsi questa settimana</p>
+            
+            <div class="leaderboard-item" onclick="openFriend('Marco Bianchi', '15.2', 'Indie Rock', 'Bohemian Rhapsody', 'MR')">
+                <div class="rank">1</div>
+                <div class="avatar" style="background: #e67e22;">MB</div>
+                <div style="flex: 1;">
+                    <strong style="display: block;">Marco Bianchi</strong>
+                    <span style="font-size: 0.8rem; color: var(--text-dim);">Ascolta: Indie Rock</span>
+                </div>
+                <strong style="color: var(--accent);">15.2 km</strong>
+            </div>
+
+            <div class="leaderboard-item" onclick="openFriend('Giulia Verdi', '12.4', 'Techno', 'Sandstorm', 'GV')">
+                <div class="rank">2</div>
+                <div class="avatar" style="background: #9b59b6;">GV</div>
+                <div style="flex: 1;">
+                    <strong style="display: block;">Giulia Verdi</strong>
+                    <span style="font-size: 0.8rem; color: var(--text-dim);">Ascolta: Techno</span>
+                </div>
+                <strong style="color: var(--accent);">12.4 km</strong>
+            </div>
+
+            <div class="leaderboard-item" onclick="openFriend('Luca Neri', '8.0', 'Lo-Fi', 'Weightless', 'LN')">
+                <div class="rank">3</div>
+                <div class="avatar" style="background: #34495e;">LN</div>
+                <div style="flex: 1;">
+                    <strong style="display: block;">Luca Neri</strong>
+                    <span style="font-size: 0.8rem; color: var(--text-dim);">Ascolta: Lo-Fi</span>
+                </div>
+                <strong style="color: var(--accent);">8.0 km</strong>
+            </div>
         </div>
 
-        <p style="margin-top:12px;font-size:13px;color:#6b8191">Il prezzo più basso degli ultimi 30 giorni è stato di 5,72 €</p>
+        <div id="view-friend-profile" class="view">
+            <button onclick="switchTab('view-friends')" style="background:none; border:none; color:white; font-size:1.2rem; margin-bottom:20px;"><i class="fa-solid fa-arrow-left"></i> Indietro</button>
+            <div style="text-align: center; margin-bottom: 30px;">
+                <div class="avatar" id="friend-initials" style="width: 80px; height: 80px; font-size: 2rem; margin: 0 auto 10px; background: var(--accent-blue);">--</div>
+                <h2 id="friend-name" style="margin:0;">Nome</h2>
+            </div>
+            
+            <div class="glass-card">
+                <h3 style="margin-top:0; color:var(--accent);"><i class="fa-solid fa-trophy"></i> Record Training</h3>
+                <h1 id="friend-record" style="margin:5px 0;">-- km</h1>
+                <p style="color:var(--text-dim); margin:0; font-size:0.8rem;">Migliore corsa in singola sessione</p>
+            </div>
 
-        <div style="margin-top:18px">
-          <button style="background:#fff;border:1px solid #ffd9c8;padding:10px 12px;border-radius:10px;cursor:pointer;width:100%" id="moreBtn">More info</button>
+            <div class="card" style="margin-top: 15px;">
+                <h3 style="margin-top:0;"><i class="fa-solid fa-headphones"></i> Gusti Musicali</h3>
+                <div id="friend-taste" class="tag">--</div>
+                <div class="tag">BPM: 140+</div>
+            </div>
+
+            <div class="card">
+                <h3 style="margin-top:0;"><i class="fa-solid fa-fire"></i> Canzone più ascoltata in corsa</h3>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div style="width: 40px; height: 40px; background: #333; border-radius: 8px; display: flex; justify-content:center; align-items:center;"><i class="fa-solid fa-music"></i></div>
+                    <strong id="friend-song">--</strong>
+                </div>
+            </div>
         </div>
 
-        <p style="margin-top:12px;font-size:13px;color:#6b8191">Guadagna 5 punti completando questo acquisto! Solo per utenti registrati.</p>
-      </aside>
-    </main>
+        <div id="view-account" class="view">
+            <h2 class="section-title">Profilo</h2>
+            <div style="text-align: center; margin-bottom: 30px;">
+                <div class="avatar" style="width: 90px; height: 90px; font-size: 2.5rem; margin: 0 auto 15px; background: linear-gradient(135deg, #111, #333); border: 2px solid var(--accent);">AR</div>
+                <h2 style="margin: 0;">Antonio Rossi</h2>
+                <span style="color: var(--text-dim); font-size: 0.9rem;">Utente Premium</span>
+            </div>
+            
+            <div class="card"><i class="fa-solid fa-gear"></i> Impostazioni Dispositivi (Watch & Audio)</div>
+            <div class="card"><i class="fa-solid fa-folder-open"></i> Sincronizzazione Cartella Musica</div>
+            <div class="card"><i class="fa-solid fa-heart-pulse"></i> Sensibilità BPM</div>
+            <button style="width: 100%; padding: 15px; border-radius: 12px; background: #2a0808; border: 1px solid #5a1111; color: #ff4444; font-weight: 600; margin-top: 20px;">Disconnetti</button>
+        </div>
 
-    <footer>© 1995 — Farmacia Soccavo (clone for parody). Use responsibly.</footer>
-  </div>
+    </div> <nav class="bottom-nav">
+        <div class="nav-item" onclick="switchTab('view-music')">
+            <i class="fa-solid fa-music"></i>
+            <span>Musica</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('view-explore')">
+            <i class="fa-solid fa-compass"></i>
+            <span>Esplora</span>
+        </div>
+        
+        <div class="fab" onclick="toggleJamModal()">
+            <i class="fa-solid fa-plus"></i>
+        </div>
 
-  <script>
-    // Replace METTI QUI LINK with the target URL (e.g., Rickroll).
-    // The user requested the visible placeholder text "METTI QUI LINK" in the code.
-    const BUY_LINK = "https://youtu.be/j7Njd_7SWRk?si=2cs0aTVIIpdmYodU";
-    document.getElementById('buyBtn').addEventListener('click', ()=>{
-      window.location.href = BUY_LINK;
-    });
-    document.getElementById('moreBtn').addEventListener('click', ()=>{
-      window.location.href = BUY_LINK;
-    });
-  </script>
+        <div class="nav-item active" onclick="switchTab('view-training')">
+            <i class="fa-solid fa-stopwatch"></i>
+            <span>Training</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('view-friends')">
+            <i class="fa-solid fa-user-group"></i>
+            <span>Amici</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('view-account')" style="display: none;" id="nav-account-hidden"></div> <div class="nav-item" onclick="switchTab('view-account')">
+            <div class="avatar" style="width: 24px; height: 24px; font-size: 0.6rem; background: var(--surface); border: 1px solid var(--text-dim);">AR</div>
+            <span>Account</span>
+        </div>
+    </nav>
+
+    <div class="modal-overlay" id="jamModal" onclick="closeJamModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="radar">
+                <i class="fa-solid fa-satellite-dish" style="font-size: 2rem; color: var(--accent-blue);"></i>
+            </div>
+            <h2 style="margin: 0 0 10px;">Inizia una Jam</h2>
+            <p style="color: var(--text-dim); font-size: 0.9rem; margin-bottom: 25px;">
+                Cerca dispositivi vicini per sincronizzare la musica o avviare un Co-Training. I battiti e i ritmi verranno condivisi.
+            </p>
+            <div class="card" style="text-align: left; display: flex; align-items: center; gap: 15px; border-color: var(--accent-blue);">
+                <div class="avatar" style="background: #9b59b6;">GV</div>
+                <div>
+                    <strong style="display: block;">Giulia Verdi <span style="font-size: 0.7rem; color: var(--accent);">(Nelle vicinanze)</span></strong>
+                    <span style="font-size: 0.8rem; color: var(--text-dim);">Pronta per correre</span>
+                </div>
+                <button style="margin-left: auto; background: var(--accent-blue); color: white; border: none; padding: 8px 15px; border-radius: 20px; font-weight: 600; cursor: pointer;">Invita</button>
+            </div>
+            <button onclick="toggleJamModal()" style="background: none; border: none; color: var(--text-dim); margin-top: 15px; text-decoration: underline;">Annulla</button>
+        </div>
+    </div>
+
+    <script>
+        // Gestione cambio tab navigazione
+        function switchTab(viewId) {
+            // Nascondi tutte le viste
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            // Deseleziona le icone nav
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            
+            // Attiva vista selezionata
+            document.getElementById(viewId).classList.add('active');
+            
+            // Attiva icona corretta (evitando errori col tasto FAB)
+            const targetIcon = Array.from(document.querySelectorAll('.nav-item')).find(el => el.getAttribute('onclick') === `switchTab('${viewId}')`);
+            if(targetIcon) targetIcon.classList.add('active');
+        }
+
+        // Gestione Profili Amici
+        function openFriend(name, record, taste, song, initials) {
+            document.getElementById('friend-name').innerText = name;
+            document.getElementById('friend-record').innerText = record + " km";
+            document.getElementById('friend-taste').innerText = taste;
+            document.getElementById('friend-song').innerText = song;
+            document.getElementById('friend-initials').innerText = initials;
+            
+            // Mostra la vista del profilo
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.getElementById('view-friend-profile').classList.add('active');
+        }
+
+        // Gestione Modale "+" Jam
+        function toggleJamModal() {
+            const modal = document.getElementById('jamModal');
+            modal.classList.toggle('active');
+        }
+
+        function closeJamModal(e) {
+            if(e.target === document.getElementById('jamModal')) {
+                toggleJamModal();
+            }
+        }
+    </script>
 </body>
 </html>
